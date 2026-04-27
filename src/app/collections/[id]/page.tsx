@@ -30,7 +30,7 @@ export default async function CollectionDetailPage({
 
   if (!collection) notFound()
 
-  const collectionRecipes = (recipes ?? []).map((r: { recipe: Recipe }) => r.recipe).filter(Boolean)
+  const collectionRecipes = ((recipes ?? []) as unknown as Array<{ recipe: Recipe }>).map((r) => r.recipe).filter(Boolean)
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
