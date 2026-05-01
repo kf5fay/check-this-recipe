@@ -48,5 +48,5 @@ export async function POST(
 
   if (cloneError) return NextResponse.json({ error: cloneError.message }, { status: 500 })
 
-  return NextResponse.redirect(new URL(`/recipes/${cloned.id}`, process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'http://localhost:3000'))
+  return NextResponse.redirect(new URL(`/recipes/${cloned.id}`, process.env.NEXT_PUBLIC_APP_URL ?? 'https://powerpuzzler.com'))
 }
