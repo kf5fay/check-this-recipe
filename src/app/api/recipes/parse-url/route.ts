@@ -36,6 +36,24 @@ export async function POST(request: Request) {
     const pageRes = await fetch(url, { signal: AbortSignal.timeout(10000) })
     if (pageRes.ok) {
       const html = await pageRes.text()
+
+      // Try JSON-LD structured data first (most recipe sites use this)
+      const jsonLdMatches = [...html.matchAll(
+        /<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi
+      )]
+      for (const match of jsonLdMatches) {
+        try {
+          const jsonData = JSON.parse(match[1])
+          const recipeData = Array.isArray(jsonData)
+            ? jsonData.find(item => item['@type'] === 'Recipe')
+            : jsonData['@type'] === 'Recipe' ? jsonData : null
+          if (recipeData) {
+            const recipe = await cleanAndStructureRecipe(JSON.stringify(recipeData))
+            if (recipe) return NextResponse.json({ recipe })
+          }
+        } catch { continue }
+      }
+
       // Strip HTML tags for Claude
       const text = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').slice(0, 8000)
       const recipe = await cleanAndStructureRecipe(text)
