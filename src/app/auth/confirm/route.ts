@@ -11,11 +11,12 @@ export async function GET(request: NextRequest) {
   if (token_hash && type) {
     const supabase = await createClient()
     const { error } = await supabase.auth.verifyOtp({ type, token_hash })
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'https://powerpuzzler.com'
 
     if (!error) {
-      return NextResponse.redirect(new URL(next, request.url))
+      return NextResponse.redirect(new URL(next, appUrl))
     }
   }
 
-  return NextResponse.redirect(new URL('/?error=auth', request.url))
+  return NextResponse.redirect(new URL('/?error=auth', process.env.NEXT_PUBLIC_APP_URL ?? 'https://powerpuzzler.com'))
 }
