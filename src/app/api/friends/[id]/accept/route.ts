@@ -36,5 +36,5 @@ export async function POST(
     payload: { accepter_id: user.id },
   })
 
-  return NextResponse.redirect(new URL('/friends', process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'http://localhost:3000'))
+  return NextResponse.redirect(new URL('/friends', process.env.NEXT_PUBLIC_APP_URL ?? 'https://powerpuzzler.com'))
 }

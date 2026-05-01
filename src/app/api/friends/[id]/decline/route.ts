@@ -19,5 +19,5 @@ export async function POST(
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  return NextResponse.redirect(new URL('/friends', process.env.NEXT_PUBLIC_SUPABASE_URL ?? 'http://localhost:3000'))
+  return NextResponse.redirect(new URL('/friends', process.env.NEXT_PUBLIC_APP_URL ?? 'https://powerpuzzler.com'))
 }
